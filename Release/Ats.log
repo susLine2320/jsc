@@ -1,0 +1,5 @@
+﻿  stdafx.cpp
+  Ats.cpp
+     ライブラリ Release\jsc.lib とオブジェクト Release\jsc.exp を作成中
+jsc.exp : warning LNK4070: .EXP 内の /OUT:ats.dll ディレクティブの指定が出力ファイル名 'Release\jsc.dll' と異なっています。ディレクティブは無視されます。
+  Ats.vcxproj -> C:\Users\鈴木心晴\Desktop\jsc\Release\jsc.dll
