@@ -1,5 +1,5 @@
-// Ats.cpp : DLL アプリケーション用のエントリ ポイントを定義します。
-//
+// 汎用乗降促進PI　メトロ総合プラグインとの併用で拡張利用可
+// Copyright (C) Line-16 2021
 
 #include "stdafx.h"
 #include "atsplugin.h"
@@ -106,6 +106,14 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	{
 		sound[33] = ATS_SOUND_STOP;
 	}
+	if (g_js1b == true)
+	{
+		sound[35] = ATS_SOUND_PLAYLOOPING;
+	}
+	else
+	{
+		sound[35] = ATS_SOUND_STOP;
+	}
 	if (g_js2 == true)
 	{
 		sound[36] = ATS_SOUND_PLAYLOOPING;
@@ -114,13 +122,21 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	{
 		sound[36] = ATS_SOUND_STOP;
 	}
-	if (g_js3 == true)
+	if (g_js3a == true)
 	{
 		sound[38] = ATS_SOUND_PLAYLOOPING;
 	}
 	else
 	{
 		sound[38] = ATS_SOUND_STOP;
+	}
+	if (g_js3b == true)
+	{
+		sound[46] = ATS_SOUND_PLAYLOOPING;
+	}
+	else
+	{
+		sound[46] = ATS_SOUND_STOP;
 	}
 	if (g_js4 == true)
 	{
@@ -145,6 +161,14 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	else
 	{
 		sound[54] = ATS_SOUND_STOP;
+	}
+	if (g_js6b == true)
+	{
+		sound[55] = ATS_SOUND_PLAYLOOPING;
+	}
+	else
+	{
+		sound[55] = ATS_SOUND_STOP;
 	}
 	if (g_js7 == true)
 	{
@@ -275,18 +299,24 @@ ATS_API void WINAPI KeyDown(int atsKeyCode)
 {
 	if (atsKeyCode == ATS_KEY_D)
 	{
-		if (g_panel92 == 1)
+		if (g_panel92 == 1 && g_line % 2 == 1)
 			g_js1a = true;
+		else if (g_panel92 == 1)
+			g_js1b = true;
 		else if (g_panel92 == 2)
 			g_js2 = true;
+		else if (g_panel92 == 3 && g_line % 2 == 1)
+			g_js3a = true;
 		else if (g_panel92 == 3)
-			g_js3 = true;
+			g_js3b = true;
 		else if (g_panel92 == 4)
 			g_js4 = true;
 		else if (g_panel92 == 5)
 			g_js5 = true;
-		else if (g_panel92 == 6)
+		else if (g_panel92 == 6 && g_line % 2 == 1)
 			g_js6a = true;
+		else if (g_panel92 == 6)
+			g_js6b = true;
 		else if (g_panel92 == 7)
 			g_js7 = true;
 		else if (g_panel92 == 8)
@@ -301,11 +331,14 @@ ATS_API void WINAPI KeyUp(int hornType)
 	if (hornType == ATS_KEY_D)
 	{
 		g_js1a = false;
+		g_js1b = false;
 		g_js2 = false;
-		g_js3 = false;
+		g_js3a = false;
+		g_js3b = false;
 		g_js4 = false;
 		g_js5 = false;
 		g_js6a = false;
+		g_js6b = false;
 		g_js7 = false;
 		g_js8 = false;
 		if (g_panel92 == 1)
@@ -349,6 +382,14 @@ ATS_API void WINAPI SetSignal(int signal)
 
 ATS_API void WINAPI SetBeaconData(ATS_BEACONDATA beaconData)
 {
+	switch (beaconData.Type)
+	{
+	case ATS_LINE: // Sロング
+		g_line = beaconData.Optional;
+		 // 駅ジャンプを除外する
+		break;
+	}
+
 }
 
 ATS_API void WINAPI Load() {}

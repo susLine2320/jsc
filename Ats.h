@@ -16,6 +16,7 @@
 #define ATS_BEACON_SPDLIM 6 // P分岐器速度制限
 #define ATS_BEACON_SPDMAX 7 // P最高速度
 #define ATS_BEACON_SPP 8 // 停車駅通過防止装置
+#define ATS_LINE 89 //AB線判定
 
 int g_emgBrake; // 非常ノッチ
 int g_svcBrake; // 常用最大ノッチ
@@ -29,7 +30,8 @@ int g_deltaT; // フレーム時間[ms/frame]
 bool g_js1a; //メトロ乗降促進ブザーA
 bool g_js1b; //メトロ乗降促進ブザーB
 bool g_js2; //東武乗降促進ブザー
-bool g_js3; //東急乗降促進ブザー
+bool g_js3a; //東急乗降促進ブザーA
+bool g_js3b; //東急乗降促進ブザーB
 bool g_js4; //西武乗降促進ブザー
 bool g_js5; //相鉄乗降促進ブザー
 bool g_js6a; //JR乗降促進ブザーA
@@ -44,6 +46,7 @@ bool g_jsc5; //相鉄乗降促進放送
 bool g_jsc6; //JR乗降促進放送
 bool g_jsc7; //小田急乗降促進放送
 bool g_jsc8; //東葉乗降促進放送
-int g_panel92;
+int g_panel92; //メトロ総合読み込み
+int g_line; //AB線判定
 
 ATS_HANDLES g_output; // 出力
