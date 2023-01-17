@@ -1,0 +1,9 @@
+Ats.log
+jsc.exp
+jsc.lib
+jsc.pch
+jsc.pdb
+jsc.build.CppClean
+vc142.pdb
+stdafx.obj
+.gitignore

@@ -43,6 +43,7 @@ ATS_API void WINAPI SetVehicleSpec(ATS_VEHICLESPEC vehicleSpec)
 ATS_API void WINAPI Initialize(int brake)
 {
 	g_speed = 0;
+	g_89 = 2;
 }
 
 ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int *sound)
@@ -116,43 +117,43 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	}
 	if (g_js2 == true)
 	{
-		sound[36] = ATS_SOUND_PLAYLOOPING;
+		sound[62] = ATS_SOUND_PLAYLOOPING;
 	}
 	else
 	{
-		sound[36] = ATS_SOUND_STOP;
+		sound[62] = ATS_SOUND_STOP;
 	}
 	if (g_js3a == true)
 	{
-		sound[38] = ATS_SOUND_PLAYLOOPING;
+		sound[64] = ATS_SOUND_PLAYLOOPING;
 	}
 	else
 	{
-		sound[38] = ATS_SOUND_STOP;
+		sound[64] = ATS_SOUND_STOP;
 	}
 	if (g_js3b == true)
 	{
-		sound[46] = ATS_SOUND_PLAYLOOPING;
+		sound[65] = ATS_SOUND_PLAYLOOPING;
 	}
 	else
 	{
-		sound[46] = ATS_SOUND_STOP;
+		sound[65] = ATS_SOUND_STOP;
 	}
 	if (g_js4 == true)
 	{
-		sound[50] = ATS_SOUND_PLAYLOOPING;
+		sound[73] = ATS_SOUND_PLAYLOOPING;
 	}
 	else
 	{
-		sound[50] = ATS_SOUND_STOP;
+		sound[73] = ATS_SOUND_STOP;
 	}
 	if (g_js5 == true)
 	{
-		sound[52] = ATS_SOUND_PLAYLOOPING;
+		sound[75] = ATS_SOUND_PLAYLOOPING;
 	}
 	else
 	{
-		sound[52] = ATS_SOUND_STOP;
+		sound[75] = ATS_SOUND_STOP;
 	}
 	if (g_js6a == true)
 	{
@@ -180,11 +181,11 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	}
 	if (g_js8 == true)
 	{
-		sound[59] = ATS_SOUND_PLAYLOOPING;
+		sound[73] = ATS_SOUND_PLAYLOOPING;
 	}
 	else
 	{
-		sound[59] = ATS_SOUND_STOP;
+		sound[73] = ATS_SOUND_STOP;
 	}
 	if (g_jsc1 == true)
 	{
@@ -197,39 +198,39 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	}
 	if (g_jsc2 == true)
 	{
-		sound[37] = ATS_SOUND_PLAY;
+		sound[63] = ATS_SOUND_PLAY;
 		g_jsc2 = false;
 	}
 	else
 	{
-		sound[37] = ATS_SOUND_CONTINUE;
+		sound[63] = ATS_SOUND_CONTINUE;
 	}
 	if (g_jsc3 == true)
 	{
-		sound[39] = ATS_SOUND_PLAY;
+		sound[66] = ATS_SOUND_PLAY;
 		g_jsc3 = false;
 	}
 	else
 	{
-		sound[39] = ATS_SOUND_CONTINUE;
+		sound[66] = ATS_SOUND_CONTINUE;
 	}
 	if (g_jsc4 == true)
 	{
-		sound[51] = ATS_SOUND_PLAY;
+		sound[74] = ATS_SOUND_PLAY;
 		g_jsc4 = false;
 	}
 	else
 	{
-		sound[51] = ATS_SOUND_CONTINUE;
+		sound[74] = ATS_SOUND_CONTINUE;
 	}
 	if (g_jsc5 == true)
 	{
-		sound[53] = ATS_SOUND_PLAY;
+		sound[76] = ATS_SOUND_PLAY;
 		g_jsc5 = false;
 	}
 	else
 	{
-		sound[53] = ATS_SOUND_CONTINUE;
+		sound[76] = ATS_SOUND_CONTINUE;
 	}
 	if (g_jsc6 == true)
 	{
@@ -251,12 +252,12 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	}
 	if (g_jsc8 == true)
 	{
-		sound[60] = ATS_SOUND_PLAY;
+		sound[76] = ATS_SOUND_PLAY;
 		g_jsc8 = false;
 	}
 	else
 	{
-		sound[60] = ATS_SOUND_CONTINUE;
+		sound[76] = ATS_SOUND_CONTINUE;
 	}
 	/*g_js1a = ATS_SOUND_STOP;
 	g_js1b = ATS_SOUND_STOP;
@@ -297,7 +298,7 @@ ATS_API void WINAPI SetReverser(int pos)
 
 ATS_API void WINAPI KeyDown(int atsKeyCode)
 {
-	if (atsKeyCode == ATS_KEY_D)
+	if (atsKeyCode == ATS_KEY_D && g_speed == 0)
 	{
 		if (g_panel92 == 1 && g_line % 2 == 1)
 			g_js1a = true;
@@ -341,24 +342,26 @@ ATS_API void WINAPI KeyUp(int hornType)
 		g_js6b = false;
 		g_js7 = false;
 		g_js8 = false;
-		if (g_panel92 == 1)
-			g_jsc1 = true;
-		else if (g_panel92 == 2)
-			g_jsc2 = true;
-		else if (g_panel92 == 3)
-			g_jsc3 = true;
-		else if (g_panel92 == 4)
-			g_jsc4 = true;
-		else if (g_panel92 == 5)
-			g_jsc5 = true;
-		else if (g_panel92 == 6)
-			g_jsc6 = true;
-		else if (g_panel92 == 7)
-			g_jsc7 = true;
-		else if (g_panel92 == 8)
-			g_jsc8 = true;
-		else
-			g_jsc1 = true;
+		if (g_speed == 0) {
+			if (g_panel92 == 1)
+				g_jsc1 = true;
+			else if (g_panel92 == 2)
+				g_jsc2 = true;
+			else if (g_panel92 == 3)
+				g_jsc3 = true;
+			else if (g_panel92 == 4)
+				g_jsc4 = true;
+			else if (g_panel92 == 5)
+				g_jsc5 = true;
+			else if (g_panel92 == 6)
+				g_jsc6 = true;
+			else if (g_panel92 == 7)
+				g_jsc7 = true;
+			else if (g_panel92 == 8)
+				g_jsc8 = true;
+			else
+				g_jsc1 = true;
+		}
 	}
 }
 
@@ -384,8 +387,13 @@ ATS_API void WINAPI SetBeaconData(ATS_BEACONDATA beaconData)
 {
 	switch (beaconData.Type)
 	{
+	case ATS_LINE_ALTERNATE:
+		if(g_89 == 2)
+			g_line = beaconData.Optional;
+		break;
 	case ATS_LINE: // Sロング
 		g_line = beaconData.Optional;
+		g_89 = 1;
 		 // 駅ジャンプを除外する
 		break;
 	}

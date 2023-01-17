@@ -16,6 +16,7 @@
 #define ATS_BEACON_SPDLIM 6 // P分岐器速度制限
 #define ATS_BEACON_SPDMAX 7 // P最高速度
 #define ATS_BEACON_SPP 8 // 停車駅通過防止装置
+#define ATS_LINE_ALTERNATE 19 //AB線判定代行
 #define ATS_LINE 89 //AB線判定
 
 int g_emgBrake; // 非常ノッチ
@@ -48,5 +49,6 @@ bool g_jsc7; //小田急乗降促進放送
 bool g_jsc8; //東葉乗降促進放送
 int g_panel92; //メトロ総合読み込み
 int g_line; //AB線判定
+int g_89;
 
 ATS_HANDLES g_output; // 出力
