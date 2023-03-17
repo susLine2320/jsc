@@ -139,7 +139,7 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	{
 		sound[65] = ATS_SOUND_STOP;
 	}
-	if (g_js4 == true)
+	if (g_js4 == true || g_js8 == true)
 	{
 		sound[73] = ATS_SOUND_PLAYLOOPING;
 	}
@@ -154,6 +154,14 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	else
 	{
 		sound[75] = ATS_SOUND_STOP;
+	}
+	if (g_js5b == true)
+	{
+		sound[77] = ATS_SOUND_PLAYLOOPING;
+	}
+	else
+	{
+		sound[77] = ATS_SOUND_STOP;
 	}
 	if (g_js6a == true)
 	{
@@ -179,6 +187,7 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	{
 		sound[57] = ATS_SOUND_STOP;
 	}
+	/*
 	if (g_js8 == true)
 	{
 		sound[73] = ATS_SOUND_PLAYLOOPING;
@@ -187,6 +196,7 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	{
 		sound[73] = ATS_SOUND_STOP;
 	}
+	*/
 	if (g_jsc1 == true)
 	{
 		sound[34] = ATS_SOUND_PLAY;
@@ -214,10 +224,11 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	{
 		sound[66] = ATS_SOUND_CONTINUE;
 	}
-	if (g_jsc4 == true)
+	if (g_jsc4 == true || g_jsc8 == true)
 	{
 		sound[74] = ATS_SOUND_PLAY;
 		g_jsc4 = false;
+		g_jsc8 = false;
 	}
 	else
 	{
@@ -250,6 +261,7 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	{
 		sound[58] = ATS_SOUND_CONTINUE;
 	}
+	/*
 	if (g_jsc8 == true)
 	{
 		sound[76] = ATS_SOUND_PLAY;
@@ -259,6 +271,7 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	{
 		sound[76] = ATS_SOUND_CONTINUE;
 	}
+	*/
 	/*g_js1a = ATS_SOUND_STOP;
 	g_js1b = ATS_SOUND_STOP;
 	g_js2 = ATS_SOUND_STOP;
@@ -312,8 +325,10 @@ ATS_API void WINAPI KeyDown(int atsKeyCode)
 			g_js3b = true;
 		else if (g_panel92 == 4)
 			g_js4 = true;
-		else if (g_panel92 == 5)
+		else if (g_panel92 == 5 && g_line % 2 == 1)
 			g_js5 = true;
+		else if (g_panel92 == 5)
+			g_js5b = true;
 		else if (g_panel92 == 6 && g_line % 2 == 1)
 			g_js6a = true;
 		else if (g_panel92 == 6)
@@ -338,6 +353,7 @@ ATS_API void WINAPI KeyUp(int hornType)
 		g_js3b = false;
 		g_js4 = false;
 		g_js5 = false;
+		g_js5b = false;
 		g_js6a = false;
 		g_js6b = false;
 		g_js7 = false;

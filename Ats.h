@@ -34,7 +34,8 @@ bool g_js2; //東武乗降促進ブザー
 bool g_js3a; //東急乗降促進ブザーA
 bool g_js3b; //東急乗降促進ブザーB
 bool g_js4; //西武乗降促進ブザー
-bool g_js5; //相鉄乗降促進ブザー
+bool g_js5; //相鉄乗降促進ブザーA
+bool g_js5b; //相鉄乗降促進ブザーB
 bool g_js6a; //JR乗降促進ブザーA
 bool g_js6b; //JR乗降促進ブザーB
 bool g_js7; //小田急乗降促進メロディ
