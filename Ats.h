@@ -7,15 +7,6 @@
 //#pragma data_seg(".shared")
 //#pragma data_seg()
 
-#define ATS_BEACON_S 0 // Sロング
-#define ATS_BEACON_SN 1 // SN直下
-#define ATS_BEACON_SNRED 2 // SN誤出発防止
-#define ATS_BEACON_P 3 // P停止信号
-#define ATS_BEACON_EMG 4 // P即停(非常)
-#define ATS_BEACON_SVC 5 // P即停(常用)
-#define ATS_BEACON_SPDLIM 6 // P分岐器速度制限
-#define ATS_BEACON_SPDMAX 7 // P最高速度
-#define ATS_BEACON_SPP 8 // 停車駅通過防止装置
 #define ATS_LINE_ALTERNATE 19 //AB線判定代行
 #define ATS_LINE 89 //AB線判定
 
@@ -50,6 +41,11 @@ bool g_jsc7; //小田急乗降促進放送
 bool g_jsc8; //東葉乗降促進放送
 int g_panel92; //メトロ総合読み込み
 int g_line; //AB線判定
-int g_89;
+int g_89; //89番使用未使用判定
+
+int ini_masconkey; //使用マスコンキー
+int ini_key; //使用キー
 
 ATS_HANDLES g_output; // 出力
+
+JscIni ini;

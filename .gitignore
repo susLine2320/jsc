@@ -1,9 +1,13 @@
-Ats.log
-jsc.exp
-jsc.lib
-jsc.pch
-jsc.pdb
-jsc.build.CppClean
-vc142.pdb
-stdafx.obj
-.gitignore
+# 特定拡張子での除外
+*.exp
+*.lib
+*.pch
+*.pdb
+*.res
+*.obj
+*.recipe
+*.log
+jsc.tlog/
+Ats.vcxproj.FileListAbsolute.txt
+
+# 特定ファイルでの除外

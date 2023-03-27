@@ -1,8 +1,9 @@
 // 汎用乗降促進PI　メトロ総合プラグインとの併用で拡張利用可
-// Copyright (C) Line-16 2021
+// Copyright (C) Line-16 2018-2023
 
 #include "stdafx.h"
 #include "atsplugin.h"
+#include "ini.h"
 #include "Ats.h"
 
 BOOL APIENTRY DllMain( HANDLE hModule, 
@@ -10,6 +11,20 @@ BOOL APIENTRY DllMain( HANDLE hModule,
                        LPVOID lpReserved
 					 )
 {
+	//ファイルパス格納
+	char filePath[_MAX_PATH + 1] = _T("");
+	//検索文字列へのポインタ
+	char* posIni;
+	bool loadCheck; // INIファイルのロードに成功したかどうか
+	//Ats.dllのファイルパスを取得
+	::GetModuleFileName((HMODULE)hModule, filePath, _MAX_PATH);
+	//パスから.dllの位置を検索
+	posIni = strstr(filePath, ".dll");
+	//.dllを.iniに置換
+	memmove(posIni, ".ini", 4);
+	// INIファイルをロードして結果を取得
+	loadCheck = ini.load(filePath);
+
     return TRUE;
 }
 
@@ -22,22 +37,8 @@ ATS_API void WINAPI SetVehicleSpec(ATS_VEHICLESPEC vehicleSpec)
 {
 	g_svcBrake = vehicleSpec.BrakeNotches;
 	g_emgBrake = g_svcBrake + 1;
-	//g_js1a = false;
-	//g_js2 = false;
-	//g_js3 = false;
-	//g_js4 = false;
-	//g_js5 = false;
-	//g_js6a = false;
-	//g_js7 = false;
-	//g_js8 = false;
-	//g_jsc1 = false;
-	//g_jsc2 = false;
-	//g_jsc3 = false;
-	//g_jsc4 = false;
-	//g_jsc5 = false;
-	//g_jsc6 = false;
-	//g_jsc7 = false;
-	//g_jsc8 = false;
+	ini_key = ini.Key.KeyIndex;
+	ini_masconkey = ini.Panel.MasconKey;
 }
 
 ATS_API void WINAPI Initialize(int brake)
@@ -52,23 +53,12 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	g_time = vehicleState.Time;
 	g_speed = vehicleState.Speed;
 
+	//入力
+	g_panel92 = panel[ini_masconkey];
+
 	// ハンドル出力
-	if(g_brakeNotch != g_emgBrake)
-	{
-		g_output.Brake = g_brakeNotch;
-	}
-	else
-	{
-		g_output.Brake = g_brakeNotch;
-	}
-	if(g_pilotlamp)
-	{
-		g_output.Reverser = g_reverser;
-	}
-	else
-	{
-		g_output.Reverser = 0;
-	}
+	g_output.Brake = g_brakeNotch;
+	g_output.Reverser = g_reverser;
 	g_output.Power = g_powerNotch;
 	g_output.ConstantSpeed = ATS_CONSTANTSPEED_CONTINUE;
 
@@ -97,9 +87,8 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	sound[58] = g_jsc7;
 	sound[60] = g_jsc8;
 */
-	g_panel92 = panel[92];
 
-	if(g_js1a == true)
+	if(g_js1a == true)//地下鉄
 	{
 		sound[33] = ATS_SOUND_PLAYLOOPING;
 	}
@@ -107,7 +96,7 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	{
 		sound[33] = ATS_SOUND_STOP;
 	}
-	if (g_js1b == true)
+	if (g_js1b == true)//地下鉄
 	{
 		sound[35] = ATS_SOUND_PLAYLOOPING;
 	}
@@ -115,7 +104,7 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	{
 		sound[35] = ATS_SOUND_STOP;
 	}
-	if (g_js2 == true)
+	if (g_js2 == true)//東武
 	{
 		sound[62] = ATS_SOUND_PLAYLOOPING;
 	}
@@ -123,7 +112,7 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	{
 		sound[62] = ATS_SOUND_STOP;
 	}
-	if (g_js3a == true)
+	if (g_js3a == true)//東急
 	{
 		sound[64] = ATS_SOUND_PLAYLOOPING;
 	}
@@ -131,7 +120,7 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	{
 		sound[64] = ATS_SOUND_STOP;
 	}
-	if (g_js3b == true)
+	if (g_js3b == true)//東急
 	{
 		sound[65] = ATS_SOUND_PLAYLOOPING;
 	}
@@ -139,7 +128,7 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	{
 		sound[65] = ATS_SOUND_STOP;
 	}
-	if (g_js4 == true || g_js8 == true)
+	if (g_js4 == true || g_js8 == true)//西武東葉
 	{
 		sound[73] = ATS_SOUND_PLAYLOOPING;
 	}
@@ -147,7 +136,7 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	{
 		sound[73] = ATS_SOUND_STOP;
 	}
-	if (g_js5 == true)
+	if (g_js5 == true)//相鉄
 	{
 		sound[75] = ATS_SOUND_PLAYLOOPING;
 	}
@@ -155,7 +144,7 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	{
 		sound[75] = ATS_SOUND_STOP;
 	}
-	if (g_js5b == true)
+	if (g_js5b == true)//相鉄
 	{
 		sound[77] = ATS_SOUND_PLAYLOOPING;
 	}
@@ -163,7 +152,7 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	{
 		sound[77] = ATS_SOUND_STOP;
 	}
-	if (g_js6a == true)
+	if (g_js6a == true)//JR
 	{
 		sound[54] = ATS_SOUND_PLAYLOOPING;
 	}
@@ -171,7 +160,7 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	{
 		sound[54] = ATS_SOUND_STOP;
 	}
-	if (g_js6b == true)
+	if (g_js6b == true)//JR
 	{
 		sound[55] = ATS_SOUND_PLAYLOOPING;
 	}
@@ -179,7 +168,7 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	{
 		sound[55] = ATS_SOUND_STOP;
 	}
-	if (g_js7 == true)
+	if (g_js7 == true)//小田急
 	{
 		sound[57] = ATS_SOUND_PLAYLOOPING;
 	}
@@ -187,17 +176,7 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	{
 		sound[57] = ATS_SOUND_STOP;
 	}
-	/*
-	if (g_js8 == true)
-	{
-		sound[73] = ATS_SOUND_PLAYLOOPING;
-	}
-	else
-	{
-		sound[73] = ATS_SOUND_STOP;
-	}
-	*/
-	if (g_jsc1 == true)
+	if (g_jsc1 == true)//地下鉄
 	{
 		sound[34] = ATS_SOUND_PLAY;
 		g_jsc1 = false;
@@ -206,7 +185,7 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	{
 		sound[34] = ATS_SOUND_CONTINUE;
 	}
-	if (g_jsc2 == true)
+	if (g_jsc2 == true)//東武
 	{
 		sound[63] = ATS_SOUND_PLAY;
 		g_jsc2 = false;
@@ -215,7 +194,7 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	{
 		sound[63] = ATS_SOUND_CONTINUE;
 	}
-	if (g_jsc3 == true)
+	if (g_jsc3 == true)//東急
 	{
 		sound[66] = ATS_SOUND_PLAY;
 		g_jsc3 = false;
@@ -224,7 +203,7 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	{
 		sound[66] = ATS_SOUND_CONTINUE;
 	}
-	if (g_jsc4 == true || g_jsc8 == true)
+	if (g_jsc4 == true || g_jsc8 == true)//西武東葉
 	{
 		sound[74] = ATS_SOUND_PLAY;
 		g_jsc4 = false;
@@ -234,7 +213,7 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	{
 		sound[74] = ATS_SOUND_CONTINUE;
 	}
-	if (g_jsc5 == true)
+	if (g_jsc5 == true)//相鉄
 	{
 		sound[76] = ATS_SOUND_PLAY;
 		g_jsc5 = false;
@@ -243,7 +222,7 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	{
 		sound[76] = ATS_SOUND_CONTINUE;
 	}
-	if (g_jsc6 == true)
+	if (g_jsc6 == true)//JR
 	{
 		sound[56] = ATS_SOUND_PLAY;
 		g_jsc6 = false;
@@ -252,7 +231,7 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	{
 		sound[56] = ATS_SOUND_CONTINUE;
 	}
-	if (g_jsc7 == true)
+	if (g_jsc7 == true)//小田急
 	{
 		sound[58] = ATS_SOUND_PLAY;
 		g_jsc7 = false;
@@ -261,36 +240,6 @@ ATS_API ATS_HANDLES WINAPI Elapse(ATS_VEHICLESTATE vehicleState, int *panel, int
 	{
 		sound[58] = ATS_SOUND_CONTINUE;
 	}
-	/*
-	if (g_jsc8 == true)
-	{
-		sound[76] = ATS_SOUND_PLAY;
-		g_jsc8 = false;
-	}
-	else
-	{
-		sound[76] = ATS_SOUND_CONTINUE;
-	}
-	*/
-	/*g_js1a = ATS_SOUND_STOP;
-	g_js1b = ATS_SOUND_STOP;
-	g_js2 = ATS_SOUND_STOP;
-	g_js3 = ATS_SOUND_STOP;
-	g_js4 = ATS_SOUND_STOP;
-	g_js5 = ATS_SOUND_STOP;
-	g_js6a = ATS_SOUND_STOP;
-	g_js6b = ATS_SOUND_STOP;
-	g_js7 = ATS_SOUND_STOP;
-	g_js8 = ATS_SOUND_STOP;
-	sound[34] = ATS_SOUND_CONTINUE;
-	sound[37] = ATS_SOUND_CONTINUE;
-	sound[39] = ATS_SOUND_CONTINUE;
-	sound[51] = ATS_SOUND_CONTINUE;
-	sound[53] = ATS_SOUND_CONTINUE;
-	sound[56] = ATS_SOUND_CONTINUE;
-	sound[58] = ATS_SOUND_CONTINUE;
-	sound[60] = ATS_SOUND_CONTINUE;
-	*/
     return g_output;
 }
 
@@ -311,7 +260,7 @@ ATS_API void WINAPI SetReverser(int pos)
 
 ATS_API void WINAPI KeyDown(int atsKeyCode)
 {
-	if (atsKeyCode == ATS_KEY_D && g_speed == 0)
+	if (atsKeyCode == ini_key && g_speed == 0)
 	{
 		if (g_panel92 == 1 && g_line % 2 == 1)
 			g_js1a = true;
@@ -344,7 +293,7 @@ ATS_API void WINAPI KeyDown(int atsKeyCode)
 
 ATS_API void WINAPI KeyUp(int hornType)
 {
-	if (hornType == ATS_KEY_D)
+	if (hornType == ini_key)
 	{
 		g_js1a = false;
 		g_js1b = false;
@@ -407,7 +356,7 @@ ATS_API void WINAPI SetBeaconData(ATS_BEACONDATA beaconData)
 		if(g_89 == 2)
 			g_line = beaconData.Optional;
 		break;
-	case ATS_LINE: // Sロング
+	case ATS_LINE:
 		g_line = beaconData.Optional;
 		g_89 = 1;
 		 // 駅ジャンプを除外する
